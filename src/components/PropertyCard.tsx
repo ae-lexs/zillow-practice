@@ -3,9 +3,15 @@ import type { Property } from "../types";
 
 interface PropertyCardProps {
     property: Property;
+    isFavorite: boolean;
+    onToggleFavorite: () => void;
 };
 
-const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
+const PropertyCard: React.FC<PropertyCardProps> = ({
+  property,
+  isFavorite,
+  onToggleFavorite,
+}) => {
   return (
     <article
       style={{
@@ -30,6 +36,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
             objectFit: "cover",
           }}
         />
+
+        {/* Status pill */}
         <span
           style={{
             position: "absolute",
@@ -44,6 +52,37 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
         >
           {property.status}
         </span>
+
+        {/* Favorite button */}
+        <button
+          type="button"
+          onClick={onToggleFavorite}
+          aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+          style={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            borderRadius: "999px",
+            border: "none",
+            padding: "4px 8px",
+            backgroundColor: "rgba(255,255,255,0.95)",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            boxShadow: "0 2px 6px rgba(15,23,42,0.18)",
+          }}
+        >
+          <span
+            aria-hidden="true"
+            style={{
+              fontSize: "0.95rem",
+              color: isFavorite ? "#f59e0b" : "#9ca3af",
+            }}
+          >
+            {isFavorite ? "★" : "☆"}
+          </span>
+        </button>
       </div>
 
       <div

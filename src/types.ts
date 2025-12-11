@@ -7,7 +7,6 @@ export interface Property {
     beds: number;
     baths: number;
     sqft: number;
-    isFavorite: boolean;
     status: "For sale" | "Pending" | "Solid";
     imageUrl: string;
 }

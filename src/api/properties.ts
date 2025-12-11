@@ -10,7 +10,6 @@ const MOCK_PROPERTIES: Property[] = [
     beds: 2,
     baths: 1,
     sqft: 900,
-    isFavorite: false,
     status: "For sale",
     imageUrl:
       "https://images.pexels.com/photos/4392270/pexels-photo-4392270.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -24,7 +23,6 @@ const MOCK_PROPERTIES: Property[] = [
     beds: 3,
     baths: 2,
     sqft: 1450,
-    isFavorite: false,
     status: "For sale",
     imageUrl:
       "https://images.pexels.com/photos/259588/pexels-photo-259588.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -38,7 +36,6 @@ const MOCK_PROPERTIES: Property[] = [
     beds: 1,
     baths: 1,
     sqft: 720,
-    isFavorite: false,
     status: "For sale",
     imageUrl:
       "https://images.pexels.com/photos/439391/pexels-photo-439391.jpeg?auto=compress&cs=tinysrgb&w=800",
@@ -52,7 +49,6 @@ const MOCK_PROPERTIES: Property[] = [
     beds: 4,
     baths: 3,
     sqft: 2200,
-    isFavorite: false,
     status: "For sale",
     imageUrl:
       "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=800",

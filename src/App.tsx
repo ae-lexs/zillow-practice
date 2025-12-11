@@ -21,6 +21,24 @@ const App: React.FC  = () => {
 
   const [sort, setSort] = useState<SortOption>("price_asc");
 
+  const [favoriteIds, setFavoriteIds] = useState<Set<string>>(() => new Set());
+
+  const [showOnlyFavorites, setShowOnlyFavorites] = useState<boolean>(false);
+
+  const handleToggleFavorite = (id: string) => {
+    setFavoriteIds((prev) => {
+      const next = new Set(prev);
+
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+
+      return next;
+    });
+  };
+
   const availableCities = useMemo(
     () => 
       Array.from(
@@ -31,15 +49,24 @@ const App: React.FC  = () => {
       [properties]
     );
 
-  const filteredProperties = useMemo(
-    () => applyFilters(properties, filters),
-    [properties, filters]
-  );
+  const filteredProperties = useMemo(() => {
+    const base = applyFilters(properties, filters);
+
+    if (!showOnlyFavorites) {
+      return base;
+    }
+
+    return base.filter((property) => favoriteIds.has(property.id));
+  }, [properties, filters, favoriteIds, showOnlyFavorites]);
 
   const sortedProperties = useMemo(
     () => applySorting(filteredProperties, sort),
     [filteredProperties, sort],
   );
+
+  const handleToggleShowOnlyFavorites = () => {
+    setShowOnlyFavorites((prev) => !prev);
+  };
 
   return (
     <div className="app-root">
@@ -63,9 +90,52 @@ const App: React.FC  = () => {
           onChange={setFilters}
         />
 
-        {/* Sorting */}
-        <div style={{ marginTop: 12, marginBottom: -8 }}>
+        {/* Sorting + Favorites toggle*/}
+        <div
+          style={{
+            marginTop: 12,
+            marginBottom: -8,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: 16,
+            flexWrap: "wrap",
+          }}
+        >
           <SortControl sort={sort} onChange={setSort} />
+
+          <button
+            type="button"
+            onClick={handleToggleShowOnlyFavorites}
+            style={{
+              padding: "6px 12px",
+              borderRadius: 999,
+              border: "1px solid var(--border)",
+              fontSize: "0.85rem",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              backgroundColor: showOnlyFavorites
+                ? "var(--accent-soft)"
+                : "var(--surface)",
+              color: showOnlyFavorites
+                ? "var(--accent)"
+                : "var(--text-muted)",
+              cursor: "pointer",
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                fontSize: "0.9rem",
+              }}
+            >
+              {showOnlyFavorites ? "★" : "☆"}
+            </span>
+            <span>
+              {showOnlyFavorites ? "Showing favorites" : "Show favorites only"}
+            </span>
+          </button>
         </div>
 
         {/* Content */}
@@ -89,7 +159,12 @@ const App: React.FC  = () => {
           {!isLoading && !error && sortedProperties.length > 0 && (
             <div className="properties-grid">
               {sortedProperties.map((property) => (
-                <PropertyCard key={property.id} property={property} />
+                <PropertyCard
+                  key={property.id}
+                  property={property}
+                  isFavorite={favoriteIds.has(property.id)}
+                  onToggleFavorite={() => handleToggleFavorite(property.id)}
+                />
               ))}
             </div>
           )}
