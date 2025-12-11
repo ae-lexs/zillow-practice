@@ -18,3 +18,9 @@ export interface PropertyFilters {
     maxPrice: number | null;
     minBeds: number | null;
 }
+
+export type SortOption =
+    | "price_asc"
+    | "price_desc"
+    | "sqft_asc"
+    | "sqft_desc";
